@@ -1,13 +1,32 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches: [ master ]
-  workflow_dispatch:
+    tags:
+      - '*'
   schedule:
   - cron: "0 8 * * 1"
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t visibilityspots/route53-dyndns:dev .
+
+      - name: Install Goss
+        uses: e1himself/goss-installation-action@v1.2.1
+        with:
+          version: 'v0.4.6'
+
+      - name: Execute Goss tests
+        env:
+          GOSS_FILES_STRATEGY: cp
+        run: dgoss run visibilityspots/route53-dyndns:dev
+
+
   buildx:
     runs-on: ubuntu-latest
     steps:

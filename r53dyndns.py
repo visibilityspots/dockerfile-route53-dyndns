@@ -116,9 +116,19 @@ def update_record(hosted_zone_id, record_to_update, current_ip):
 def main():
     parser = argparse.ArgumentParser(description='Update a Route53 hosted A record with with current external IP address of the system.')
     parser.add_argument('-r', '--record', help='specify the DNS A record to update')
+    parser.add_argument('--version', help='print version',
+                        action="store_true")
     parser.add_argument('-v', '--verbose', help='enable verbose output',
                         action="store_true")
     args = parser.parse_args()
+
+    if args.version:
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(message)s',
+        )
+        logging.info('r53dyndns version 2024.3.0 (built March 2024)')
+        exit(0)
 
     if args.record is None:
         logging.error('No record specified')
