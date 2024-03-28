@@ -1,0 +1,13 @@
+user:
+  aws:
+    exists: true
+
+file:
+  /usr/local/bin/r53dyndns:
+    exists: true
+
+command:
+  'r53dyndns --version':
+    exit-status: 0
+    stdout:
+    - version 2024.3.0 (built March 2024)
